@@ -25,6 +25,8 @@ Exit codes:
 Environment variables:
     CONFIDENCE : Model detection confidence threshold
                  Default: 0.7
+    RESOLUTION : Frame or image resolution, for better performance consider smaller resolutions
+                 Default: 1280x720
                  
 Usage:
     Run system with video:
@@ -86,7 +88,7 @@ def run_app(
         return 4
 
     font = cv2.FONT_HERSHEY_DUPLEX
-    camera_lens = Camera(args.video)
+    camera_lens = Camera(args.video, environment.resolution)
     cones_detector = ConesDetector()
     try:
         for frame in camera_lens.get_frame():

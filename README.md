@@ -54,11 +54,6 @@ in building an autonomous formula. The project is proof of concept of cones dete
 the currently developed perception system. The positions of the cones seen through the camera are then
 used by the car’s autonomous system to drive.
 
-<!-- CAMERA PERCEPTION -->
-## Camera perception
-
-[Cones detection](https://github.com/lukaszmichalskii/camera-perception/blob/master/docs/yolo/autocross.mp4) model in version 2.0 during PWR Racing Team car test on autocross event
-
 <!-- BACKLOG -->
 ## Backlog
 
