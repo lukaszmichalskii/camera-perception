@@ -18,10 +18,14 @@ class Environment:
 
     def __init__(self, env):
         self.os = get_current_os()
+        self.conf = float(env.get("CONFIDENCE", 0.7))
 
     @staticmethod
     def from_env(env):
         return Environment(env)
 
     def to_info_string(self):
-        return "OS: {}".format(self.os)
+        return "OS: {}, detections confidence: {}%".format(
+            self.os,
+            self.conf*100
+        )
