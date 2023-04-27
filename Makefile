@@ -5,6 +5,7 @@ FILES=$(shell git ls-files '*.py')
 build: requirements.txt
 	@if [ ! -d $(VENV) ]; then virtualenv -p python3 $(VENV); fi
 	@$(PYTHON) -m pip install -r requirements.txt;
+	@$(PYTHON) sys_check.py
 
 format:
 	@$(PYTHON) -m black .
