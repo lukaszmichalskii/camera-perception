@@ -11,7 +11,7 @@ format:
 	@$(PYTHON) -m black .
 
 run:
-	@$(PYTHON) src/main.py
+	@$(PYTHON) src/detect.py
 
 test:
 	@$(PYTHON) -m unittest discover tests/

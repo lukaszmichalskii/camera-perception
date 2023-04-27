@@ -25,6 +25,12 @@ Exit codes:
 Environment variables:
     CONFIDENCE : Model detection confidence threshold
                  Default: 0.7
+                 
+Usage:
+    Run system with video:
+    python3 detect.py --video <path_to_video>
+    Specify detection confidence threshold 0.5:
+    export CONFIDENCE=0.5 && python3 detect.py --video <path_to_video>
 
 More info: <https://github.com/lukaszmichalskii/camera-perception>"""
 
@@ -41,7 +47,7 @@ def run_app(
             cone.bounding_box.top_left,
             cone.bounding_box.bottom_right,
             cone.color,
-            3
+            3,
         )
 
     def label():
@@ -52,7 +58,7 @@ def run_app(
             font,
             0.5,
             cone.color,
-            1
+            1,
         )
 
     if environment.os != "linux":
@@ -73,10 +79,10 @@ def run_app(
         logger.info(f"Not implemented.")
         return 2
 
-    if environment.processing_unit == 'CUDA':
+    if environment.processing_unit == "CUDA":
         logger.info(environment.cuda_to_info_string())
     else:
-        logger.error('CUDA not enabled.')
+        logger.error("CUDA not enabled.")
         return 4
 
     font = cv2.FONT_HERSHEY_DUPLEX
@@ -90,7 +96,7 @@ def run_app(
                     cone = ConeLandmark(
                         cls=int(detection.cls[0]),
                         conf=detection.conf[0],
-                        detection=detection
+                        detection=detection,
                     )
                     bounding_box()
                     label()

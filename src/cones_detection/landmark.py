@@ -53,5 +53,5 @@ class BoundingBox:
         bounding_box = detection.xyxy[0, :]
         return BoundingBox(
             top_left=(int(bounding_box[0]), int(bounding_box[1])),
-            bottom_right=(int(bounding_box[2]), int(bounding_box[3]))
+            bottom_right=(int(bounding_box[2]), int(bounding_box[3])),
         )

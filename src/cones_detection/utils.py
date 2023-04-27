@@ -3,7 +3,7 @@ def get_class_list(class_file):
     with open(class_file) as fd:
         class_ = fd.readline().strip()
         while class_:
-            ids, cone = class_.split(' ')
+            ids, cone = class_.split(" ")
             classes.append((ids, cone))
             class_ = fd.readline().strip()
     return classes
