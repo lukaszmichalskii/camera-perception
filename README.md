@@ -24,7 +24,7 @@
     <a href="https://github.com/lukaszmichalskii/camera-perception"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/lukaszmichalskii/camera-perception">View Demo</a>
+    <a href="https://github.com/lukaszmichalskii/camera-perception#camera-perception">View Demo</a>
     ·
     <a href="https://github.com/lukaszmichalskii/camera-perception/issues">Report Bug</a>
     ·
@@ -38,6 +38,7 @@
 ## Table of Contents
 
 * [About the Project](#about-the-project)
+* [Camera perception](#camera-perception)
 * [Backlog](#backlog)
 * [Contact](#contact)
 
@@ -47,11 +48,16 @@
 ## About The Project
 
 Cones detection algorithm used in the camera vision system
-of an autonomous formula of the PWr Racing Team, participating in the Formula Student Driverless
+of an autonomous formula, participating in the Formula Student Driverless
 competition. Formula Student Driverless is a worldwide university competition, each year teams compete
 in building an autonomous formula. The project is proof of concept of cones detection module for
 the currently developed perception system. The positions of the cones seen through the camera are then
 used by the car’s autonomous system to drive.
+
+<!-- CAMERA PERCEPTION -->
+## Camera perception
+
+[Cones detection](https://github.com/lukaszmichalskii/camera-perception/blob/master/docs/yolo/autocross.mp4) model in version 2.0 during PWR Racing Team car test on autocross event
 
 <!-- BACKLOG -->
 ## Backlog
