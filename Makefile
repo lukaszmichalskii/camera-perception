@@ -22,3 +22,4 @@ lint:
 
 clean:
 	rm -rf .mypy_cache
+	rm -rf runs

@@ -4,8 +4,10 @@ import os
 import pathlib
 import sys
 import typing
+import cv2
 
 from camera_perception import logs, common
+from camera_perception.camera import Camera
 
 
 def get_help_epilog():
@@ -48,6 +50,15 @@ def run_app(
         logger.error(f"Video file '{str(video)}' not exist.")
         logger.info("App finished with exit code 1")
         return 1
+
+    camera_lens = Camera(args.video)
+    for frame in camera_lens.get_frame():
+        cv2.imshow("Cones Detection", frame)
+        if cv2.waitKey(1) == ord("q"):
+            break
+
+    camera_lens.turn_off()
+    cv2.destroyAllWindows()
 
     logger.info("App finished with exit code 0")
     return 0
