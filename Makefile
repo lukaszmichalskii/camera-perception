@@ -13,9 +13,6 @@ format:
 run:
 	@$(PYTHON) src/detect.py
 
-test:
-	@$(PYTHON) -m unittest discover tests/
-
 lint:
 	@$(PYTHON) -m black --diff --check $(FILES)
 	@$(PYTHON) -m pylint --disable=all --enable=unused-import $(FILES)
