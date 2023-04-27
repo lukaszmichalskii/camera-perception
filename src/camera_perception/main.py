@@ -19,11 +19,12 @@ Exit codes:
     1 - missing input file
     2 - not implemented option
     3 - unable to open camera device
+    4 - CUDA not enabled
     any other code indicated unrecoverable error
 
 Environment variables:
     CONFIDENCE : Model detection confidence threshold
-                 Default: 0.75
+                 Default: 0.7
 
 More info: <https://github.com/lukaszmichalskii/camera-perception>"""
 
@@ -71,6 +72,12 @@ def run_app(
     if args.image:
         logger.info(f"Not implemented.")
         return 2
+
+    if environment.processing_unit == 'CUDA':
+        logger.info(environment.cuda_to_info_string())
+    else:
+        logger.error('CUDA not enabled.')
+        return 4
 
     font = cv2.FONT_HERSHEY_DUPLEX
     camera_lens = Camera(args.video)
