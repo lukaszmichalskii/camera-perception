@@ -6,7 +6,7 @@ import sys
 import typing
 import cv2
 
-from camera_perception import logs, common
+from camera_perception import logs, common, utils
 from camera_perception.camera import Camera, CameraError
 from cones_detection.cones_detector import ConesDetector
 from cones_detection.landmark import ConeLandmark
@@ -17,9 +17,7 @@ def get_help_epilog():
 Exit codes:
     0 - successful execution
     1 - missing input file
-    2 - not implemented option
     3 - unable to open camera device
-    4 - CUDA not enabled
     any other code indicated unrecoverable error
 
 Environment variables:
@@ -43,25 +41,8 @@ def run_app(
     logger: logging.Logger,
     environment: common.Environment,
 ) -> int:
-    def bounding_box():
-        cv2.rectangle(
-            frame,
-            cone.bounding_box.top_left,
-            cone.bounding_box.bottom_right,
-            cone.color,
-            3,
-        )
-
-    def label():
-        cv2.putText(
-            frame,
-            f"{cone.name} {round(cone.conf * 100)}%",
-            (cone.bounding_box.top_left[0], cone.bounding_box.top_left[1] - 10),
-            font,
-            0.5,
-            cone.color,
-            1,
-        )
+    def gui_exit(window):
+        return cv2.getWindowProperty(window, cv2.WND_PROP_VISIBLE) < 1
 
     if environment.os != "linux":
         logger.warning(
@@ -71,47 +52,115 @@ def run_app(
         f"cones_detector: {sys.executable} argv: {argv} {environment.to_info_string()}"
     )
 
+    if args.save and os.path.exists(args.output) and os.listdir(args.output):
+        logger.error(f"Output directory {args.output} is not empty")
+        logger.info("App finished with exit code 1")
+        return 1
+
     video = pathlib.Path(args.video) if args.video else None
     if video and not video.exists():
         logger.error(f"Video file '{str(video)}' not exist.")
         logger.info("App finished with exit code 1")
         return 1
 
-    if args.image:
-        logger.info(f"Not implemented.")
-        return 2
+    image = pathlib.Path(args.image) if args.image else None
+    if image and not image.exists():
+        logger.error(f"Image file '{str(image)}' not exist.")
+        logger.info("App finished with exit code 1")
+        return 1
 
     if environment.processing_unit == "CUDA":
         logger.info(environment.cuda_to_info_string())
+    elif environment.processing_unit == "CPU":
+        logger.info(environment.cpu_to_info_string())
     else:
-        logger.error("CUDA not enabled.")
-        return 4
+        logger.warning(
+            f"Detected unknown PyTorch installation {environment.processing_unit} {environment.version}. "
+            f"Some functionalities may not work correctly"
+        )
 
+    # setup
     font = cv2.FONT_HERSHEY_DUPLEX
-    camera_lens = Camera(args.video, environment.resolution)
+    title = "Cones Detection"
+    exit_key = "q"
+    cache = None
+    if args.save:
+        cache = []
+
     cones_detector = ConesDetector()
-    try:
-        for frame in camera_lens.get_frame():
-            detections = cones_detector.detect(image=frame, conf=environment.conf)
-            if len(detections) > 0:
-                for detection in detections.boxes:
-                    cone = ConeLandmark(
-                        cls=int(detection.cls[0]),
-                        conf=detection.conf[0],
-                        detection=detection,
-                    )
-                    bounding_box()
-                    label()
 
-            cv2.imshow("Cones Detection", frame)
-            if cv2.waitKey(1) == ord("q"):
-                break
+    output = pathlib.Path(args.output) if args.output else None
+    if args.save and not output.exists():
+        output.mkdir()
 
-        camera_lens.turn_off()
-        cv2.destroyAllWindows()
-    except CameraError as e:
-        logger.error(str(e))
-        return 3
+    if video:
+        camera_lens = Camera(args.video, environment.resolution)
+        try:
+            for idx, frame in enumerate(camera_lens.get_frame()):
+                detections = cones_detector.detect(image=frame, conf=environment.conf)
+                if len(detections) > 0:
+                    for detection in detections.boxes:
+                        cone = ConeLandmark(
+                            cls=int(detection.cls[0]),
+                            conf=detection.conf[0],
+                            detection=detection,
+                        )
+                        utils.bounding_box(frame, cone)
+                        utils.label(frame, cone, font)
+
+                cv2.imshow(title, frame)
+                if args.save:
+                    cache.append(frame)
+                if cv2.waitKey(1) == ord(exit_key):
+                    break
+                if gui_exit(title):
+                    break
+
+            camera_lens.turn_off()
+            cv2.destroyAllWindows()
+        except CameraError as e:
+            logger.error(str(e))
+            return 3
+
+    if image:
+        img_inference = cv2.imread(str(image))
+        inferences = cones_detector.detect(image=img_inference, conf=environment.conf)
+        if len(inferences) > 0:
+            for inference in inferences.boxes:
+                cone = ConeLandmark(
+                    cls=int(inference.cls[0]),
+                    conf=inference.conf[0],
+                    detection=inference,
+                )
+                utils.bounding_box(img_inference, cone)
+                utils.label(img_inference, cone, font)
+
+            cv2.imshow(title, img_inference)
+            if args.save:
+                cv2.imwrite(
+                    str(
+                        output.joinpath(
+                            f"{image.stem}_detection.{environment.img_graphics_format}"
+                        )
+                    ),
+                    img_inference,
+                )
+            while True:
+                if cv2.waitKey(1) == ord(exit_key):
+                    break
+                if gui_exit(title):
+                    break
+            cv2.destroyAllWindows()
+
+    if args.save and video:
+        logger.info("Saving images...")
+        for idx, frame in enumerate(cache):
+            cv2.imwrite(
+                str(
+                    output.joinpath(f"detection{idx}.{environment.img_graphics_format}")
+                ),
+                frame,
+            )
 
     logger.info("App finished with exit code 0")
     return 0
@@ -138,6 +187,17 @@ def main(argv: typing.List[str], logger=None, environment=None) -> int:
         type=str,
         metavar="input_data",
         help="specifies image with environment for cones detection",
+    )
+    parser.add_argument(
+        "--save", action="store_true", help="save results from image cones recognition"
+    )
+    parser.add_argument(
+        "-o",
+        "--output",
+        type=str,
+        metavar="output_dir",
+        default="results",
+        help="if '--save' option then specifies directory, where results should be saved. Has to be empty",
     )
     parser.epilog = get_help_epilog()
     return run_app(parser.parse_args(argv[1:]), argv, logger, environment)

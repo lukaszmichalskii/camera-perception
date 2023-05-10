@@ -10,8 +10,11 @@ build: requirements.txt
 format:
 	@$(PYTHON) -m black .
 
-run:
-	@$(PYTHON) src/detect.py
+run_img:
+	@$(PYTHON) src/detect.py --image docs/yolo/inference.jpg
+
+run_video:
+	@$(PYTHON) src/detect.py --video docs/yolo/autocross.mp4
 
 lint:
 	@$(PYTHON) -m black --diff --check $(FILES)
