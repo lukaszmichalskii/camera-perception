@@ -21,7 +21,7 @@
   <p align="center">
     Cones detection module based on YOLOv8 algorithm
     <br />
-    <a href="https://github.com/lukaszmichalskii/camera-perception"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/lukaszmichalskii/camera-perception/blob/master/MANUAL.md"><strong>Explore the docs »</strong></a>
     <br />
     <br />
     <a href="https://github.com/lukaszmichalskii/camera-perception/blob/master/docs/resources/demo.jpg">View Demo</a>
@@ -40,8 +40,6 @@
 * [About the Project](#about-the-project)
 * [Backlog](#backlog)
 * [Contact](#contact)
-* [License](#license)
-
 
 
 <!-- ABOUT THE PROJECT -->

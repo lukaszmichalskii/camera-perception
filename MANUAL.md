@@ -8,8 +8,6 @@
 </p>
 
 
---------------------------------------------------------------------------------
-
 <!-- TABLE OF CONTENTS -->
 ## Table of Contents
 - [More About Cones Detection](#more-about-cones-detection)
