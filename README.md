@@ -16,7 +16,7 @@
     <img src="docs/resources/logo.png" alt="Logo" width="127" height="154">
   </a>
 
-  <h3 align="center">Camera Perception</h3>
+  <h3 align="center">Cones Detection</h3>
 
   <p align="center">
     Cones detection module based on YOLOv8 algorithm
@@ -40,6 +40,7 @@
 * [About the Project](#about-the-project)
 * [Backlog](#backlog)
 * [Contact](#contact)
+* [License](#license)
 
 
 

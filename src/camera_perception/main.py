@@ -69,13 +69,13 @@ def run_app(
         logger.info("App finished with exit code 1")
         return 1
 
-    if environment.processing_unit == "CUDA":
+    if environment.compute_platform == "CUDA":
         logger.info(environment.cuda_to_info_string())
-    elif environment.processing_unit == "CPU":
+    elif environment.compute_platform == "CPU":
         logger.info(environment.cpu_to_info_string())
     else:
         logger.warning(
-            f"Detected unknown PyTorch installation {environment.processing_unit} {environment.version}. "
+            f"Detected unknown PyTorch installation {environment.compute_platform} {environment.version}. "
             f"Some functionalities may not work correctly"
         )
 

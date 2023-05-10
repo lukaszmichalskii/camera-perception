@@ -45,7 +45,7 @@ class Environment:
     def __init__(self, env):
         self.os = get_current_os()
         self.conf = float(env.get("CONFIDENCE", 0.7))
-        self.processing_unit, self.version = processing_unit()
+        self.compute_platform, self.version = processing_unit()
         self.resolution = get_resolution(env.get("RESOLUTION", "1280x720"))
         self.img_graphics_format = "jpg"
 
@@ -56,7 +56,7 @@ class Environment:
     def to_info_string(self) -> str:
         return "os: {}, processing unit: {}, detections confidence: {}%, resolution: {}x{}".format(
             self.os,
-            self.processing_unit,
+            self.compute_platform,
             self.conf * 100,
             self.resolution[0],
             self.resolution[1],
