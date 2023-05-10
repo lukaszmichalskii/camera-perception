@@ -24,7 +24,7 @@
     <a href="https://github.com/lukaszmichalskii/camera-perception"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/lukaszmichalskii/camera-perception#camera-perception">View Demo</a>
+    <a href="https://github.com/lukaszmichalskii/camera-perception/blob/master/docs/resources/demo.jpg">View Demo</a>
     ·
     <a href="https://github.com/lukaszmichalskii/camera-perception/issues">Report Bug</a>
     ·
@@ -38,7 +38,6 @@
 ## Table of Contents
 
 * [About the Project](#about-the-project)
-* [Camera perception](#camera-perception)
 * [Backlog](#backlog)
 * [Contact](#contact)
 
