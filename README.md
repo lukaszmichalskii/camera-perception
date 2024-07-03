@@ -65,8 +65,7 @@ Project: [https://github.com/lukaszmichalskii/camera-perception](https://github.
 
 | Author       | Email        |
 |--------------|--------------|
-| Łukasz Michalski | 261118@student.pwr.edu.pl |
-| Andrzej Sołtysik | 259191@student.pwr.edu.pl |
+| Łukasz Michalski | lukasz.michalski.pwrrt@gmail.com |
 
 
 <!-- MARKDOWN LINKS & IMAGES -->
